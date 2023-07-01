@@ -2,29 +2,18 @@
 
 $packageName= 'veracrypt'
 $toolsDir   = $(Split-Path -parent $MyInvocation.MyCommand.Definition)
-$url        = 'https://launchpad.net/veracrypt/trunk/1.25.9/+download/VeraCrypt%20Setup%201.25.9.exe'
+$url        = 'https://launchpad.net/veracrypt/trunk/1.25.9/+download/VeraCrypt_Setup_x64_1.25.9.msi'
 
 $packageArgs = @{
   packageName   = $packageName
-  fileType      = 'EXE'
+  fileType      = 'msi'
   url           = $url
 
-  silentArgs = "" # Silent installation discussion: https://veracrypt.codeplex.com/discussions/579539
+  silentArgs = 'ACCEPTLICENSE=YES /qn'
 
   softwareName  = 'VeraCrypt*'
-  checksum      = '9328f69fe8cca3377b66783fbae4405d764e77eae75cc2b62ac082c551d93a0e'
+  checksum      = '206d31c2ed1a2b0390d4dfa12e74a9b9dae88658d1f9bfa1bb433b23e2b24fd8'
   checksumType  = 'sha256'
 }
-
-#Thanks to dtgm and the GitHub package for ideas.
-$ahkExe = 'AutoHotKey'
-$ahkFile = Join-Path $toolsDir "veracryptInstall.ahk"
-$ahkProc = Start-Process -FilePath $ahkExe `
-                         -ArgumentList "`"$ahkFile`"" `
-                         -PassThru
-
-$ahkId = $ahkProc.Id
-Write-Debug "$ahkExe start time:`t$($ahkProc.StartTime.ToShortTimeString())"
-Write-Debug "Process ID:`t$ahkId"
 
 Install-ChocolateyPackage @packageArgs
